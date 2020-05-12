@@ -1,10 +1,11 @@
 package sg.edu.np.WhackAMole;
 
+import android.support.v7.app.AppCompatActivity;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Button buttonPressed = (Button) v;
-                Log.v(TAG, "Reached");
                 switch (holeButtonList.indexOf(buttonPressed)) {
                     case 0:
                         Log.v(TAG, "Button Left Clicked!");
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     private void nextLevel(){
         /* Launch advanced page */
         Intent main2Activity = new Intent(this, Main2Activity.class);
-        main2Activity.putExtra("Score", score);
+        main2Activity.putExtra("Score", Integer.parseInt(resultTextView.getText().toString()));
         startActivity(main2Activity);
     }
 

@@ -13,6 +13,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main2Activity extends AppCompatActivity {
     /* Hint
@@ -25,7 +27,7 @@ public class Main2Activity extends AppCompatActivity {
     private TextView resultTextView;
     private static final String TAG = "Whack-A-Mole!";
     private Integer randomLocation;
-    private Integer score;
+    private Integer score = 0;
 
     private final List<Button> holeButtonList = new ArrayList<>();
 
@@ -62,11 +64,7 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Button buttonPressed = (Button) v;
-                Log.v(TAG, "Reached");
                 doCheck(buttonPressed);
-                resetMole();
-                setNewMole();
-                placeMoleTimer(); //Reset timer.
             }
         };
 
@@ -113,6 +111,9 @@ public class Main2Activity extends AppCompatActivity {
                 Log.v(TAG, "Hit, score added!");
                 score += 1;
                 resultTextView.setText(score.toString());
+                resetMole(); //If hit, reset mole
+                setNewMole();
+                placeMoleTimer(); //Reset timer.
                 break;
             default:
                 Log.v(TAG, "Unknown button pressed, no case for it's text set.");
@@ -138,16 +139,25 @@ public class Main2Activity extends AppCompatActivity {
                 String msg = "Get ready in " + timeRemaining.toString() + " seconds!";
 
                 //Toast is a small pop up which length is the same as the text length.
-                Toast countDownMsg = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
+                final Toast countDownMsg = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
                 countDownMsg.show();
+
+                //Set timer to delete toast
+                Timer deleteCountDownMsg = new Timer();
+                deleteCountDownMsg.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        countDownMsg.cancel();
+                    }
+                }, 1000);
             }
 
             @Override
             public void onFinish() {
                 Log.v(TAG, "Ready CountDown Complete!");
                 Toast.makeText(getApplicationContext(), "GO!", Toast.LENGTH_SHORT).show();
+                setNewMole();
                 placeMoleTimer();
-                countDownTimer.cancel();
             }
         };
 
