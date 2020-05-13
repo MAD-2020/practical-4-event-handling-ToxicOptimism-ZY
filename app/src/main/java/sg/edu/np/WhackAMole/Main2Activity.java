@@ -113,6 +113,7 @@ public class Main2Activity extends AppCompatActivity {
                 resultTextView.setText(score.toString());
                 resetMole(); //If hit, reset mole
                 setNewMole();
+                countDownTimer.cancel();
                 placeMoleTimer(); //Reset timer.
                 break;
             default:
